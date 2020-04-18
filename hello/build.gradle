@@ -4,9 +4,7 @@ import org.gradle.internal.jvm.Jvm
  * There is currently no "C application" plugin, so this build uses the "C++ application" plugin and then reconfigures it
  * to build C instead.
  */
-plugins {
-    id 'cpp-library'
-}
+apply plugin: 'cpp-library'
 
 group 'org.example'
 version '1.0-SNAPSHOT'
