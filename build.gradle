@@ -1,23 +1,19 @@
-plugins {
-    id 'java'
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+
+    }
 }
 
-group 'org.example'
-version '1.0-SNAPSHOT'
-
-sourceCompatibility = 1.8
-
-repositories {
-    mavenCentral()
+allprojects {
+    repositories {
+        mavenCentral()
+    }
 }
 
-dependencies {
-    testCompile group: 'junit', name: 'junit', version: '4.12'
+task clean(type: Delete) {
+    delete rootProject.buildDir
 }
 
-
-test {
-    systemProperty "java.library.path", file("${project(":hello").buildDir}/lib/main/debug").absolutePath
-}
-
-test.dependsOn  ':hello:linkDebug'
