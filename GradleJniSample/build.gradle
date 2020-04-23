@@ -1,9 +1,23 @@
 apply plugin: 'java'
-
+apply plugin: 'application'
 group 'org.example'
 version '1.0-SNAPSHOT'
 
 sourceCompatibility = 1.8
+
+sourceSets {
+    main {
+        java {
+            srcDirs = ['src/main/java', '../hello_pure_library/src/main/java']
+        }
+        resources {
+            srcDir 'src/main/res'
+        }
+    }
+    output {
+
+    }
+}
 
 dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
@@ -12,5 +26,9 @@ dependencies {
 test {
     systemProperty "java.library.path", file("${project(":hello").buildDir}/lib/main/debug").absolutePath
 }
+run{
+    systemProperty "java.library.path", file("${project(":hello").buildDir}/lib/main/debug").absolutePath
+}
 
 test.dependsOn  ':hello:linkDebug'
+run.dependsOn  ':hello:linkDebug'
