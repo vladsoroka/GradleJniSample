@@ -1,4 +1,4 @@
 rootProject.name = 'GradleJniSample'
 include 'GradleJniSample'
 include 'hello'
-
+include 'hello_pure_library'
