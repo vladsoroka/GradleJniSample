@@ -23,7 +23,7 @@ library {
             compileTask.includes.from("${Jvm.current().javaHome}/include/win32")
         }
 
-        compileTask.source.from fileTree(dir: "src/main/c", include: "**/*.c")
+        compileTask.source.from fileTree(dir: "../hello_pure_library/src/main/jni", include: "**/*.c")
 
         def toolChain = binary.toolChain
         if (toolChain instanceof VisualCpp) {
