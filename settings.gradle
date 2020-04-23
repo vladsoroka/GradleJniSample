@@ -1,4 +1,7 @@
 rootProject.name = 'GradleJniSample'
 include 'GradleJniSample'
-include 'hello'
+include ':hello'
+project(":hello").projectDir = file("./hello")
 include 'hello_pure_library'
+include ':hello_for_android'
+project(":hello_for_android").projectDir = file("./hello_ndk")
