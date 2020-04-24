@@ -12,8 +12,9 @@ version '1.0-SNAPSHOT'
 library {
     binaries.configureEach { CppBinary binary ->
         def compileTask = binary.compileTask.get()
+        def toolChain = binary.toolChain
+        println("Show use toolChain : "+toolChain.name)
         compileTask.includes.from("${Jvm.current().javaHome}/include")
-
         def osFamily = binary.targetPlatform.targetMachine.operatingSystemFamily
         if (osFamily.macOs) {
             compileTask.includes.from("${Jvm.current().javaHome}/include/darwin")
@@ -21,11 +22,12 @@ library {
             compileTask.includes.from("${Jvm.current().javaHome}/include/linux")
         } else if (osFamily.windows) {
             compileTask.includes.from("${Jvm.current().javaHome}/include/win32")
+            //FIXME TODO !! if use Android Studio NDK (clang ? Cmake ? ) extra  include ?
+            if (toolChain instanceof GccCompatibleToolChain){
+//                compileTask.includes.from(" ")
+            }
         }
-
         compileTask.source.from fileTree(dir: "../hello_pure_library/src/main/jni", include: "**/*.c")
-
-        def toolChain = binary.toolChain
         if (toolChain instanceof VisualCpp) {
             compileTask.compilerArgs.addAll(["/TC"])
         } else if (toolChain instanceof GccCompatibleToolChain) {
