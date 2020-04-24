@@ -2,10 +2,9 @@ import org.junit.Test;
 
 import j.HelloWorld;
 
-
 public class HelloTest {
     @Test
     public void testHello() {
-        new HelloWorld().print();
+        System.out.print("Show JNI info : " + new HelloWorld().stringFromJNI());
     }
 }
