@@ -25,13 +25,19 @@ library {
             //FIXME TODO !! if use Android Studio NDK (clang ? Cmake ? ) extra  include ?
             if (toolChain instanceof GccCompatibleToolChain){
 //                compileTask.includes.from(" ")
+                //FIXME  gcc pass clang !!
+                compileTask.includes.from("D:\\Program Files\\MinGW\\mingw64\\include")
+                compileTask.includes.from("D:\\Program Files\\MinGW\\mingw64\\x86_64-w64-mingw32\\include")
+                compileTask.includes.from("D:\\Program Files\\MinGW\\mingw64\\lib\\gcc\\x86_64-w64-mingw32\\8.1.0\\include\\c++")
+                compileTask.includes.from("D:\\Program Files\\MinGW\\mingw64\\lib\\gcc\\x86_64-w64-mingw32\\8.1.0\\include\\c++\\x86_64-w64-mingw32")
+                compileTask.includes.from("D:\\Program Files\\MinGW\\mingw64\\lib\\gcc\\x86_64-w64-mingw32\\8.1.0\\include\\c++\\backward")
             }
         }
         compileTask.source.from fileTree(dir: "../hello_pure_library/src/main/jni", include: "**/*.c")
         if (toolChain instanceof VisualCpp) {
             compileTask.compilerArgs.addAll(["/TC"])
         } else if (toolChain instanceof GccCompatibleToolChain) {
-            compileTask.compilerArgs.addAll(["-x", "c", "-std=c11"])
+            compileTask.compilerArgs.addAll(["-x", "c", "-std=c11", "-v"])
         }
     }
 }
