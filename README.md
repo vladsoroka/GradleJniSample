@@ -1,4 +1,4 @@
-# Java&Native HelloWorld Gradle Project 
+# Java&Native j.HelloWorld Gradle Project
 
 Based on [new Gradle C++ plugins](https://docs.gradle.org/current/userguide/building_cpp_projects.html) which is recommended to use over [the older Native plugins](https://docs.gradle.org/current/userguide/native_software.html)
 
