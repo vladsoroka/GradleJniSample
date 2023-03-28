@@ -15,6 +15,28 @@ dependencies {
     testImplementation 'junit:junit:4.12'
 }
 
+repositories {
+    flatDir {
+        dirs 'hello/build/lib/main/debug'
+    }
+}
+
+jar {
+    manifest {
+        attributes 'Main-Class': 'HelloWorld'
+    }
+    from {
+        configurations.runtimeClasspath.collect {
+            it.isDirectory() ? it : zipTree(it)
+        }
+    }
+    into('libs') {
+        from 'hello/build/lib/main/debug'
+        include '*.dylib' // replace '*.so' with the appropriate file extension for your platform
+    }
+}
+
+
 
 test {
     systemProperty "java.library.path", file("${project(":hello").buildDir}/lib/main/debug").absolutePath
