@@ -27,8 +27,14 @@ if (osName.contains("mac")) {
     throw new IllegalStateException("Unsupported platform: " + osName)
 }
 
+repositories {
+    flatDir {
+        dirs 'hello/build/lib/main/debug'
+    }
+}
 
 jar {
+    dependsOn classes
     manifest {
         attributes 'Main-Class': 'HelloWorld'
     }
@@ -43,10 +49,7 @@ jar {
     }
 }
 
-
-
 test {
     systemProperty "java.library.path", file("${project(":hello").buildDir}/lib/main/debug").absolutePath
 }
-
 test.dependsOn  ':hello:linkDebug'

@@ -2,6 +2,8 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Locale;
 
 public class HelloWorld {
@@ -11,6 +13,26 @@ public class HelloWorld {
         // Load the native library from the JAR file
         String libraryName = "libhello";
         String extension = PlatformUtils.getLibraryExtension();
+
+        if (PlatformUtils.runningInJar()) {
+            loadLibraryFromJar(libraryName, extension);
+        } else {
+            tryEnvironmentOrPathLoad(libraryName, extension);
+        }
+    }
+
+    private static void tryEnvironmentOrPathLoad(String libraryName, String extension) {
+        String separator = System.getProperty("file.separator");
+        String fullLibraryPath = System.getProperty("java.library.path") + separator + libraryName + "." + extension;
+        File libraryFile = new File(fullLibraryPath);
+        if (libraryFile.exists()) {
+            System.load(fullLibraryPath);
+        } else {
+            System.loadLibrary(libraryName);
+        }
+    }
+
+    private static void loadLibraryFromJar(String libraryName, String extension) {
         InputStream inputStream = HelloWorld.class.getResourceAsStream("/libs/" + libraryName + "." + extension);
         File tempFile = null;
         try {

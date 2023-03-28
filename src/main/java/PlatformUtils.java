@@ -13,4 +13,9 @@ public class PlatformUtils {
             throw new IllegalStateException("Unsupported platform: " + osName);
         }
     }
+
+    public static boolean runningInJar() {
+        String protocol = PlatformUtils.class.getResource(PlatformUtils.class.getName() + ".class").getProtocol();
+        return protocol.startsWith("jar");
+    }
 }
