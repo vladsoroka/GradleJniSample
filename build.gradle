@@ -15,11 +15,18 @@ dependencies {
     testImplementation 'junit:junit:4.12'
 }
 
-repositories {
-    flatDir {
-        dirs 'hello/build/lib/main/debug'
-    }
+String osName = System.getProperty("os.name").toLowerCase(Locale.US)
+String libraryExtension
+if (osName.contains("mac")) {
+    libraryExtension = "dylib"
+} else if (osName.contains("linux")) {
+    libraryExtension = "so"
+} else if (osName.contains("windows")) {
+    libraryExtension = "dll"
+} else {
+    throw new IllegalStateException("Unsupported platform: " + osName)
 }
+
 
 jar {
     manifest {
@@ -31,8 +38,8 @@ jar {
         }
     }
     into('libs') {
-        from 'hello/build/lib/main/debug'
-        include '*.dylib' // replace '*.so' with the appropriate file extension for your platform
+        from "hello/build/lib/main/debug"
+        include "*.$libraryExtension"
     }
 }
 

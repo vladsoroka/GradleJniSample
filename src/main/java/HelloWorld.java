@@ -10,10 +10,11 @@ public class HelloWorld {
     static {
         // Load the native library from the JAR file
         String libraryName = "libhello";
-        InputStream inputStream = HelloWorld.class.getResourceAsStream("/libs/" + libraryName + "." + getLibraryExtension());
+        String extension = PlatformUtils.getLibraryExtension();
+        InputStream inputStream = HelloWorld.class.getResourceAsStream("/libs/" + libraryName + "." + extension);
         File tempFile = null;
         try {
-            tempFile = File.createTempFile(libraryName, "." + getLibraryExtension());
+            tempFile = File.createTempFile(libraryName, "." + extension);
             tempFile.deleteOnExit();
             FileOutputStream outputStream = new FileOutputStream(tempFile);
             byte[] buffer = new byte[4096];
@@ -35,19 +36,6 @@ public class HelloWorld {
             if (tempFile != null && tempFile.exists()) {
                 tempFile.delete();
             }
-        }
-    }
-
-    private static String getLibraryExtension() {
-        String osName = System.getProperty("os.name").toLowerCase(Locale.US);
-        if (osName.contains("mac")) {
-            return "dylib";
-        } else if (osName.contains("linux")) {
-            return "so";
-        } else if (osName.contains("windows")) {
-            return "dll";
-        } else {
-            throw new IllegalStateException("Unsupported platform: " + osName);
         }
     }
 
