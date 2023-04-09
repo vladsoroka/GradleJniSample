@@ -12,12 +12,44 @@ repositories {
 }
 
 dependencies {
-    testCompile group: 'junit', name: 'junit', version: '4.12'
+    testImplementation 'junit:junit:4.12'
 }
 
+String osName = System.getProperty("os.name").toLowerCase(Locale.US)
+String libraryExtension
+if (osName.contains("mac")) {
+    libraryExtension = "dylib"
+} else if (osName.contains("linux")) {
+    libraryExtension = "so"
+} else if (osName.contains("windows")) {
+    libraryExtension = "dll"
+} else {
+    throw new IllegalStateException("Unsupported platform: " + osName)
+}
+
+repositories {
+    flatDir {
+        dirs 'hello/build/lib/main/debug'
+    }
+}
+
+jar {
+    dependsOn classes
+    manifest {
+        attributes 'Main-Class': 'HelloWorld'
+    }
+    from {
+        configurations.runtimeClasspath.collect {
+            it.isDirectory() ? it : zipTree(it)
+        }
+    }
+    into('libs') {
+        from "hello/build/lib/main/debug"
+        include "*.$libraryExtension"
+    }
+}
 
 test {
     systemProperty "java.library.path", file("${project(":hello").buildDir}/lib/main/debug").absolutePath
 }
-
 test.dependsOn  ':hello:linkDebug'
